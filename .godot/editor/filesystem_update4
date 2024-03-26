@@ -1,0 +1,5 @@
+res://scenes/tilemap.tscn
+res://scenes/main.tscn
+res://scripts/main.gd
+res://scenes/grid.tscn
+res://scripts/TileMap.gd
