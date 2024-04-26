@@ -3,7 +3,7 @@ extends TileMap
 
 var column = 16
 var row = 16
-var max_bomb = 50
+var max_bomb = 40
 var is_clicked = false
 
 const red_layer = 0
@@ -33,6 +33,7 @@ const cell_list ={
 
 var bomb_pos =[]
 var number_pos = []
+var flag_pos = []
 
 func _ready():
 	generate_background()
@@ -54,8 +55,10 @@ func _process(delta):
 	if Input.is_action_just_pressed("flag") and is_blue(mouse_pos):
 		if is_flag(mouse_pos):
 			erase_cell(flag_layer,mouse_pos)
+			flag_pos.erase(mouse_pos)
 		else:
 			set_cell(flag_layer,mouse_pos,tileset_id,cell_list["flag"])
+			flag_pos.append(mouse_pos)
 	
 		print("flag")
 	#if Input.is_action_pressed("reset"):
@@ -111,28 +114,44 @@ func get_numberlocation(pos):
 
 func game_over():
 	for x in bomb_pos:
-		erase_cell(blue_layer,x)
+		if not is_flag(x):
+			erase_cell(blue_layer,x)
+	for x in flag_pos:
+		if not is_bomb(x):
+			erase_cell(flag_layer,x)
+			set_cell(flag_layer,x,numberset_id,cell_list[8])
+
 	print("game over")
 
 func clear_tiles(mouse_pos):
 	var pending_clear = []
 	var cleared = []
 	pending_clear.append(mouse_pos)
-	for tile in pending_clear:
-		pending_clear.remove_at(0)
+	while not pending_clear.is_empty():
+		var tile = pending_clear[0]
+		#pending_clear.remove_at(0)
+		cleared.append(tile)
+		var surrounding_list = []
 		for x in [-1, 0, 1]:
 			for y in [-1, 0, 1]:
-				var current_tile = Vector2i(tile.x+x,tile.y+y)
-				erase_cell(blue_layer,current_tile)
-				if current_tile in cleared:
+				if not(x == 0 and y == 0):
+					surrounding_list.append(Vector2i(tile.x+x,tile.y+y))
+					
+		for pos in surrounding_list:
+			if not is_number(pos) and not cleared.has(pos) and not pending_clear.has(pos):
+				if pos.x > -1 and pos.x < column:
+					if pos.y > -1 and pos.y < row:
+						pending_clear.append(pos)
 					continue
-				elif current_tile.x>=0 and current_tile.y>=0:
-					if is_number(current_tile) or (x ==0 and y ==0):
-						cleared.append(current_tile)
-					else:	
-						pending_clear.append(current_tile)
-		print("pending_clear =", pending_clear, "and cleared=", cleared)
-		pass
+			if is_number(pos):
+				cleared.append(pos)
+		
+		pending_clear.erase(tile)
+		
+	
+	for pos in cleared:
+		erase_cell(blue_layer,pos)
+	pass
 	
 			
 
