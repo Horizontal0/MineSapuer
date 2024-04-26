@@ -1,2 +1,6 @@
 res://scenes/main.tscn
 res://scenes/grid.tscn
+res://scripts/TileMap.gd
+res://scenes/ui.tscn
+res://scenes/ui.gd
+res://scripts/main.gd

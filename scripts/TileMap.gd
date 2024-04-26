@@ -1,6 +1,7 @@
 extends TileMap
 
-
+signal first_click
+var started = false
 var column = 16
 var row = 16
 var max_bomb = 40
@@ -44,13 +45,18 @@ func _ready():
 func _process(delta):
 	var mouse_pos = local_to_map(get_local_mouse_position())
 	if Input.is_action_just_pressed("click"):
-		if is_bomb(mouse_pos):
-			game_over()
-		elif is_number(mouse_pos):
-			erase_cell(blue_layer,mouse_pos)
-		else:
-			clear_tiles(mouse_pos)
-			erase_cell(blue_layer,mouse_pos)
+		if started == false:
+			started = true
+			first_click.emit()
+		
+		if not is_flag(mouse_pos):
+			if is_bomb(mouse_pos):
+				game_over()
+			elif is_number(mouse_pos):
+				erase_cell(blue_layer,mouse_pos)
+			else:
+				clear_tiles(mouse_pos)
+				erase_cell(blue_layer,mouse_pos)
 			
 	if Input.is_action_just_pressed("flag") and is_blue(mouse_pos):
 		if is_flag(mouse_pos):
@@ -108,7 +114,7 @@ func get_numberlocation(pos):
 		for y in [-1, 0, 1]:
 			var current_tile = Vector2i(pos.x + x, pos.y + y)
 			var tile_number = get_cell_atlas_coords(number_layer,current_tile).x + 1
-			if x == 0 and y == 0 or bomb_pos.has(current_tile):
+			if x == 0 and y == 0 or bomb_pos.has(current_tile) or current_tile.x < 0 or current_tile.y < 0:
 				continue
 			set_cell(number_layer,current_tile,numberset_id,cell_list[tile_number+1])
 
@@ -152,8 +158,7 @@ func clear_tiles(mouse_pos):
 	for pos in cleared:
 		erase_cell(blue_layer,pos)
 	pass
-	
-			
+
 
 
 
