@@ -1,11 +1,14 @@
 extends TileMap
 
+signal add_flag
+signal remove_flag
 signal first_click
 var started = false
 var column = 16
 var row = 16
 var max_bomb = 40
 var is_clicked = false
+var flag_got = true
 
 const red_layer = 0
 const bomb_layer = 1
@@ -48,8 +51,7 @@ func _process(delta):
 		if started == false:
 			started = true
 			first_click.emit()
-		
-		if not is_flag(mouse_pos):
+		if not is_flag(mouse_pos) and 0<mouse_pos.x and mouse_pos.x<(column-1) and mouse_pos.y >-1 and mouse_pos.y<(row-1):
 			if is_bomb(mouse_pos):
 				game_over()
 			elif is_number(mouse_pos):
@@ -62,10 +64,12 @@ func _process(delta):
 		if is_flag(mouse_pos):
 			erase_cell(flag_layer,mouse_pos)
 			flag_pos.erase(mouse_pos)
-		else:
+			remove_flag.emit()
+		elif flag_got == true:
 			set_cell(flag_layer,mouse_pos,tileset_id,cell_list["flag"])
 			flag_pos.append(mouse_pos)
-	
+			add_flag.emit()
+
 		print("flag")
 	#if Input.is_action_pressed("reset"):
 		#clear()
@@ -148,7 +152,11 @@ func clear_tiles(mouse_pos):
 				if pos.x > -1 and pos.x < column:
 					if pos.y > -1 and pos.y < row:
 						pending_clear.append(pos)
-					continue
+						continue
+			if is_flag(pos):
+				erase_cell(flag_layer,pos)
+				remove_flag.emit()
+					
 			if is_number(pos):
 				cleared.append(pos)
 		

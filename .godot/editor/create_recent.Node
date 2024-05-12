@@ -1,6 +1,10 @@
-Timer
-Control
-TextureRect
-Label
 Button
+OptionButton
+Control
+Container
+Label
+LineEdit
+Panel
+Timer
+TextureRect
 TileMap

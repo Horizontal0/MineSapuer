@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bo0w3qjx6eqsd"]
+
+[node name="LevelPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 132.0
+offset_top = 131.0
+offset_right = 364.0
+offset_bottom = 352.0
+
+[node name="difficulty" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 216.0
+offset_right = 232.0
+offset_bottom = 256.0
+
+[node name="Label" type="Label" parent="difficulty"]
+layout_mode = 2
+offset_left = -34.0
+offset_top = 13.0
+offset_right = 8.0
+offset_bottom = 36.0
+text = "difficluty : "
+
+[node name="OptionButton" type="OptionButton" parent="difficulty"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 10.0
+offset_right = 156.0
+offset_bottom = 41.0
+item_count = 3
+popup/item_0/text = "hard"
+popup/item_0/id = 0
+popup/item_1/text = "medium"
+popup/item_1/id = 1
+popup/item_2/text = "easy"
+popup/item_2/id = 2
+
+[node name="size" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 229.0
+offset_top = 151.0
+offset_right = 269.0
+offset_bottom = 191.0
+
+[node name="Label" type="Label" parent="size"]
+layout_mode = 2
+offset_left = -34.0
+offset_top = 13.0
+offset_right = 8.0
+offset_bottom = 36.0
+text = "size : "
+
+[node name="LineEdit" type="LineEdit" parent="size"]
+layout_mode = 2
+offset_right = 67.0625
+offset_bottom = 49.0
+text = "16"
