@@ -1,5 +1,6 @@
 extends TileMap
 
+signal game_overs
 signal add_flag
 signal remove_flag
 signal first_click
@@ -9,6 +10,7 @@ var row = 16
 var max_bomb = 40
 var is_clicked = false
 var flag_got = true
+var playing = false
 
 const red_layer = 0
 const bomb_layer = 1
@@ -47,11 +49,11 @@ func _ready():
 	
 func _process(delta):
 	var mouse_pos = local_to_map(get_local_mouse_position())
-	if Input.is_action_just_pressed("click"):
-		if started == false:
-			started = true
-			first_click.emit()
-		if not is_flag(mouse_pos) and 0<mouse_pos.x and mouse_pos.x<(column-1) and mouse_pos.y >-1 and mouse_pos.y<(row-1):
+	if Input.is_action_just_pressed("click") and playing:
+		if not is_flag(mouse_pos) and -1<mouse_pos.x and mouse_pos.x<(column) and mouse_pos.y >-1 and mouse_pos.y<(row):
+			if started == false:
+				started = true
+				first_click.emit()
 			if is_bomb(mouse_pos):
 				game_over()
 			elif is_number(mouse_pos):
@@ -60,7 +62,7 @@ func _process(delta):
 				clear_tiles(mouse_pos)
 				erase_cell(blue_layer,mouse_pos)
 			
-	if Input.is_action_just_pressed("flag") and is_blue(mouse_pos):
+	if Input.is_action_just_pressed("flag") and is_blue(mouse_pos) and playing:
 		if is_flag(mouse_pos):
 			erase_cell(flag_layer,mouse_pos)
 			flag_pos.erase(mouse_pos)
@@ -123,6 +125,8 @@ func get_numberlocation(pos):
 			set_cell(number_layer,current_tile,numberset_id,cell_list[tile_number+1])
 
 func game_over():
+	game_overs.emit()
+	playing = false
 	for x in bomb_pos:
 		if not is_flag(x):
 			erase_cell(blue_layer,x)

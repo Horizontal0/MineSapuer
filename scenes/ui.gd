@@ -4,7 +4,6 @@ var flag_amount = 10
 @onready var flag_text = $Control/flag
 @onready var time_text = $time
 
-
 #func _ready():
 	#timer_change(711)
 #func _process(delta):

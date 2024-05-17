@@ -1,37 +1,64 @@
-[gd_scene format=3 uid="uid://bo0w3qjx6eqsd"]
+[gd_scene load_steps=5 format=3 uid="uid://bo0w3qjx6eqsd"]
+
+[ext_resource type="Script" path="res://scripts/level_panel.gd" id="1_l08p0"]
+[ext_resource type="FontFile" uid="uid://c6opdcl1pocyf" path="res://assets/Minecraft.ttf" id="1_y3m4i"]
+
+[sub_resource type="Gradient" id="Gradient_qdnte"]
+colors = PackedColorArray(0.278431, 0.278431, 0.278431, 1, 0.278431, 0.278431, 0.278431, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ri68s"]
+gradient = SubResource("Gradient_qdnte")
 
 [node name="LevelPanel" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_l08p0")
 
-[node name="Panel" type="Panel" parent="."]
-offset_left = 132.0
-offset_top = 131.0
-offset_right = 364.0
-offset_bottom = 352.0
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 138.0
+offset_right = 384.0
+offset_bottom = 349.0
+texture = SubResource("GradientTexture1D_ri68s")
 
-[node name="difficulty" type="Control" parent="."]
+[node name="Button" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 38.0
+offset_right = 65.0
+offset_bottom = 181.0
+theme_override_fonts/font = ExtResource("1_y3m4i")
+text = "d
+o
+n
+e"
+
+[node name="difficulty" type="Control" parent="TextureRect"]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 192.0
-offset_top = 216.0
-offset_right = 232.0
-offset_bottom = 256.0
+offset_left = 109.0
+offset_top = 92.0
+offset_right = 149.0
+offset_bottom = 132.0
 
-[node name="Label" type="Label" parent="difficulty"]
+[node name="Label" type="Label" parent="TextureRect/difficulty"]
 layout_mode = 2
 offset_left = -34.0
-offset_top = 13.0
-offset_right = 8.0
-offset_bottom = 36.0
-text = "difficluty : "
+offset_top = -7.0
+offset_right = 24.0
+offset_bottom = 16.0
+theme_override_fonts/font = ExtResource("1_y3m4i")
+text = "Level : "
 
-[node name="OptionButton" type="OptionButton" parent="difficulty"]
+[node name="OptionButton" type="OptionButton" parent="TextureRect/difficulty"]
 layout_mode = 0
-offset_left = 46.0
-offset_top = 10.0
-offset_right = 156.0
-offset_bottom = 41.0
+offset_left = 20.0
+offset_top = -14.0
+offset_right = 125.0
+offset_bottom = 17.0
+theme_override_colors/font_color = Color(0.894118, 0.839216, 0.486275, 1)
+theme_override_fonts/font = ExtResource("1_y3m4i")
 item_count = 3
 popup/item_0/text = "hard"
 popup/item_0/id = 0
@@ -40,23 +67,36 @@ popup/item_1/id = 1
 popup/item_2/text = "easy"
 popup/item_2/id = 2
 
-[node name="size" type="Control" parent="."]
+[node name="size" type="Control" parent="TextureRect"]
 anchors_preset = 0
-offset_left = 229.0
-offset_top = 151.0
-offset_right = 269.0
-offset_bottom = 191.0
+offset_left = 114.0
+offset_top = 28.0
+offset_right = 154.0
+offset_bottom = 68.0
 
-[node name="Label" type="Label" parent="size"]
+[node name="Label" type="Label" parent="TextureRect/size"]
 layout_mode = 2
-offset_left = -34.0
-offset_top = 13.0
-offset_right = 8.0
-offset_bottom = 36.0
-text = "size : "
+offset_left = -39.0
+offset_top = 14.0
+offset_right = 6.0
+offset_bottom = 37.0
+theme_override_fonts/font = ExtResource("1_y3m4i")
+text = "Size   : "
 
-[node name="LineEdit" type="LineEdit" parent="size"]
+[node name="LineEdit" type="LineEdit" parent="TextureRect/size"]
 layout_mode = 2
-offset_right = 67.0625
-offset_bottom = 49.0
+offset_left = 40.0
+offset_top = -1.0
+offset_right = 92.0
+offset_bottom = 48.0
+theme_override_colors/font_color = Color(0.894118, 0.839216, 0.486275, 1)
+theme_override_fonts/font = ExtResource("1_y3m4i")
 text = "16"
+alignment = 1
+max_length = 2
+flat = true
+select_all_on_focus = true
+
+[connection signal="pressed" from="TextureRect/Button" to="." method="_on_button_pressed"]
+[connection signal="item_selected" from="TextureRect/difficulty/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="text_submitted" from="TextureRect/size/LineEdit" to="." method="_on_line_edit_text_submitted"]

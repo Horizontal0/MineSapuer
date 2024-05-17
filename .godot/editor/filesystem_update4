@@ -1,1 +1,8 @@
+res://scenes/main.tscn
+res://scenes/grid.tscn
+res://scenes/ui.tscn
 res://scenes/level_panel.tscn
+res://scripts/level_panel.gd
+res://scripts/main.gd
+res://scripts/TileMap.gd
+res://scenes/ui.gd

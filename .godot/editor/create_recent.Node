@@ -1,10 +1,10 @@
+Panel
+TextureRect
 Button
 OptionButton
 Control
 Container
 Label
 LineEdit
-Panel
 Timer
-TextureRect
 TileMap
