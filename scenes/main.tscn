@@ -58,4 +58,5 @@ position = Vector2(287, 11)
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="add_flag" from="tilemap" to="." method="_on_tilemap_add_flag"]
 [connection signal="first_click" from="tilemap" to="." method="_on_tilemap_first_click"]
+[connection signal="game_overs" from="tilemap" to="." method="_on_tilemap_game_overs"]
 [connection signal="remove_flag" from="tilemap" to="." method="_on_tilemap_remove_flag"]

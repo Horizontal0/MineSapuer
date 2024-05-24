@@ -8,7 +8,10 @@ var tile_size = 16
 
 signal playing(tile_size,level)
 
+#func _ready():
+	#option_button.
 func _on_button_pressed():
+	tile_size = line_edit.text
 	playing.emit(tile_size,level)
 
 func _on_line_edit_text_submitted(new_text):

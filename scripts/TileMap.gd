@@ -7,10 +7,13 @@ signal first_click
 var started = false
 var column = 16
 var row = 16
-var max_bomb = 40
+var cleared = []
+#var max_bomb = 40
 var is_clicked = false
 var flag_got = true
 var playing = false
+var win_condition
+#var grid_level = "easy"
 
 const red_layer = 0
 const bomb_layer = 1
@@ -42,8 +45,17 @@ var number_pos = []
 var flag_pos = []
 
 func _ready():
+	generate(16,40)
+
+func generate(tile_size,max_bomb):
+	clear()
+	column = tile_size
+	row = tile_size
+	win_condition = tile_size*tile_size-max_bomb
+	print("win count", win_condition)
+	change_tile_size()
 	generate_background()
-	generate_bomb()
+	generate_bomb(max_bomb)
 	generate_number()
 	generate_front()
 	
@@ -102,7 +114,8 @@ func generate_front():
 		for y in range(column):
 			set_cell(blue_layer,Vector2i(x,y),tileset_id,cell_list["blue"])
 
-func generate_bomb():
+func generate_bomb(max_bomb):
+	bomb_pos =[]
 	for x in range(max_bomb):
 		var random_pos =Vector2i(randi_range(0,column-1),randi_range(0,row-1))
 		while bomb_pos.has(random_pos):
@@ -139,7 +152,6 @@ func game_over():
 
 func clear_tiles(mouse_pos):
 	var pending_clear = []
-	var cleared = []
 	pending_clear.append(mouse_pos)
 	while not pending_clear.is_empty():
 		var tile = pending_clear[0]
@@ -163,6 +175,10 @@ func clear_tiles(mouse_pos):
 					
 			if is_number(pos):
 				cleared.append(pos)
+				if len(cleared) == win_condition:
+					print("length",cleared.size())
+					print(cleared)
+					print("youwin")
 		
 		pending_clear.erase(tile)
 		
@@ -171,7 +187,14 @@ func clear_tiles(mouse_pos):
 		erase_cell(blue_layer,pos)
 	pass
 
-
+func change_tile_size():
+	var viewportsize = get_viewport_rect().size
+	var tile_size_x = viewportsize.x/column
+	var tile_size_y = viewportsize.y/row
+	var tile_px = min(tile_size_x,tile_size_y)
+	print ("Column: ",column)
+	print ("")
+	scale = Vector2(viewportsize.x/(column*32),viewportsize.x/(row*32))
 
 
 

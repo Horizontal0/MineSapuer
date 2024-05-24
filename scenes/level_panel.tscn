@@ -60,6 +60,7 @@ offset_bottom = 17.0
 theme_override_colors/font_color = Color(0.894118, 0.839216, 0.486275, 1)
 theme_override_fonts/font = ExtResource("1_y3m4i")
 item_count = 3
+selected = 2
 popup/item_0/text = "hard"
 popup/item_0/id = 0
 popup/item_1/text = "medium"

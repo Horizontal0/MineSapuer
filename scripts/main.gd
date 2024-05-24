@@ -1,7 +1,7 @@
 extends Node2D
 
 var level_panel_instance
-var daobaf = 40  #difficulty_amount_of_bomb_and_flag
+var daobaf = 99  #difficulty_amount_of_bomb_and_flag
 var flag_amount = 40
 var time = 0
 @onready var timer = $Timer
@@ -10,9 +10,7 @@ var time = 0
 @onready var level_panel_scene = preload("res://scenes/level_panel.tscn")
 
 func _ready():
-	level_panel_instance = level_panel_scene.instantiate()
-	add_child(level_panel_instance)
-	level_panel_instance.playing.connect(play)
+	generate_panel()
 	flag_amount = daobaf
 	update_flag()
 
@@ -20,10 +18,23 @@ func _process(delta):
 	if Input.is_action_just_pressed("reset"):
 		get_tree().reload_current_scene()
 
+func generate_panel():
+	level_panel_instance = level_panel_scene.instantiate()
+	add_child(level_panel_instance)
+	level_panel_instance.playing.connect(play)
+
 func play(tile_size,level):
 	level_panel_instance.queue_free()
 	tilemap.playing = true
-	print(level + tile_size)
+	tile_size = int(tile_size)
+	if level == "easy":
+		flag_amount = tile_size
+	elif level == "medium":
+		flag_amount = round(pow(tile_size,1.25))
+	elif level == "hard":
+		flag_amount = round(pow(tile_size,1.5))
+	update_flag()
+	tilemap.generate(tile_size,flag_amount)
 
 func timer_stop():
 	timer.stop()
@@ -49,3 +60,10 @@ func update_flag():
 		tilemap.flag_got = true
 	else:
 		tilemap.flag_got = false
+
+
+func _on_tilemap_game_overs():
+	timer_stop()
+	tilemap.playing = false
+	generate_panel()
+	
